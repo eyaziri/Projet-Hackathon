@@ -34,6 +34,10 @@ public:
     int GetCode() const { return UtilisateurPlatforme::CodeUtilisateur; }
     static void remplirFichierParticipant(const Participant<T> p);
     static void afficherFichierParticipant();
+    std::string getCompetence()
+    {
+        return Competence;
+    }
 };
 
 

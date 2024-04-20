@@ -9,8 +9,6 @@
 #include <ctime>
 #include"Message.h"
 #include"Commentaire.h"
-class Message;
-class Commentaire;
 
 
 class UtilisateurPlatforme {
@@ -36,6 +34,35 @@ public:
     friend std::ostream& operator<< (std::ostream&, UtilisateurPlatforme*);
     friend std::istream& operator>> (std::istream&, UtilisateurPlatforme*);
     UtilisateurPlatforme& operator=(const UtilisateurPlatforme&);
+    std::string getNom()
+    {
+        return nom;
+    }
+    std::string getPrenom()
+    {
+        return prenom;
+    }
+    std::string getAdresseEmail()
+    {
+        return adresseEmail;
+    }
+    std::vector<Adresse*> getAdresse()
+    {
+     return adr;
+    }
+
+    void setNom( std::string n){
+        nom = n ;
+    }
+     void setprenom( std::string n){
+        prenom = n ;
+    }
+     void setAdresseMail( std::string n){
+        adresseEmail = n ;
+    }
+     void set( std::string n){
+        nom = n ;
+    }
 };
 
 #endif // UTILISATEURPLATFORME_H

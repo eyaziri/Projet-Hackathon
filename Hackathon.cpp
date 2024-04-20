@@ -1,6 +1,6 @@
 #include "Hackathon.h"
 #include "Equipe.h"
-#include "Resultat.h"
+
 #include "UtilisateurPlatforme.h"
 #include "Participant.h"
 #include "Juge.h"
@@ -11,7 +11,6 @@
 
 
 std::vector<Equipe*> Hackathon::equipe;
-std::vector<Resultat*> Hackathon::resultat;
 std::vector<Participant<std::string>*> Hackathon::participant;
 std::vector<Organisateur*> Hackathon::organisateur;
 std::vector<Juge*> Hackathon::juge;
@@ -20,9 +19,6 @@ Hackathon::Hackathon() {
 
     Equipe* q = new Equipe();
     equipe.push_back(q);
-
-    Resultat* r = new Resultat();
-    resultat.push_back(r);
 
     Participant<std::string>* p = new Participant<std::string>();
     participant.push_back(p);
@@ -36,10 +32,6 @@ Hackathon::Hackathon() {
 }
 
 Hackathon::~Hackathon() {
-    for (std::vector<Resultat*>::size_type i = 0; i < resultat.size(); i++) {
-        delete resultat[i];
-    }
-    resultat.clear();
 
     for (std::vector<Equipe*>::size_type p = 0; p < equipe.size(); p++) {
         delete equipe[p];
@@ -63,10 +55,6 @@ Hackathon::~Hackathon() {
 }
 
 Hackathon::Hackathon(const Hackathon &h) {
-   for (std::vector<Resultat*>::size_type i = 0; i < h.resultat.size(); i++) {
-        Resultat* q = new Resultat(*(h.resultat[i]));
-        resultat.push_back(q);
-    }
 
     for (std::vector<Equipe*>::size_type p = 0; p < h.equipe.size(); p++) {
         Equipe* e = new Equipe(*(h.equipe[p]));
@@ -91,9 +79,6 @@ Hackathon::Hackathon(const Hackathon &h) {
 }
 
 std::ostream& operator<<(std::ostream &out, const Hackathon &h) {
-    for (std::vector<Resultat*>::size_type  i = 0; i < h.resultat.size(); i++) {
-        out << *(h.resultat[i]) << std::endl;
-    }
 
     for (std::vector<Equipe*>::size_type p = 0; p < h.equipe.size(); p++) {
         out << *(h.equipe[p]) << std::endl;
@@ -118,10 +103,6 @@ std::istream& operator>>(std::istream &in, Hackathon &h) {
     Equipe* q = new Equipe();
     in >> *q;
     h.equipe.push_back(q);
-
-    Resultat* r = new Resultat();
-    in >> *r;
-    h.resultat.push_back(r);
 
     Participant<std::string>* p = new Participant<std::string>();
     in >> p;
@@ -148,16 +129,6 @@ Hackathon& Hackathon::operator=(const Hackathon &h) {
         for (std::vector<Equipe*>::size_type i = 0; i < h.equipe.size(); i++) {
             Equipe* e = new Equipe(*(h.equipe[i]));
             equipe.push_back(e);
-        }
-
-        for (std::vector<Resultat*>::size_type j = 0; j < resultat.size(); j++) {
-            delete resultat[j];
-        }
-        resultat.clear();
-
-        for (std::vector<Resultat*>::size_type j = 0; j < h.resultat.size(); j++) {
-            Resultat* r = new Resultat(*(h.resultat[j]));
-            resultat.push_back(r);
         }
 
         for (int p = 0; p < participant.size(); p++) {

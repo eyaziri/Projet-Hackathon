@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <iomanip>
 
 
 Adresse::Adresse(int code, std::string adr) : codePostal(code), adresse(adr) {}
@@ -18,8 +19,8 @@ void ajouterAdresse(Adresse& a) {
 }
 
 std::ostream& operator<<(std::ostream& out, const Adresse& a) {
-    out << "\n L'adresse est : " << a.adresse << std::endl;
-    out << "\nLe code postal est : " << a.codePostal << std::endl;
+    out << "\n L'adresse est : \n" << a.adresse << std::endl;
+    out << "\nLe code postal est : \n" << a.codePostal << std::endl;
     return out;
 }
 
@@ -32,4 +33,15 @@ std::istream& operator>>(std::istream& in, Adresse& a) {
     in >> a.codePostal;
 
     return in;
+}
+std::ostream& operator<<(std::ostream& out, const Adresse* a)
+{
+    out << a->codePostal << std::setw(2) << a->adresse << std::setw(2);
+    return out ;
+}
+std::istream& operator>>(std::istream& in, Adresse* a)
+{
+    in >> a->codePostal ;
+    in >> a->adresse ;
+    return in ;
 }

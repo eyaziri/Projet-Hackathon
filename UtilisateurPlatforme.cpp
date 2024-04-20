@@ -105,7 +105,7 @@ std::ostream& operator<<(std::ostream& out, const UtilisateurPlatforme& u)
     out << "\nLe codeUtilisateur est : " << u.CodeUtilisateur << std::endl;
     for (std::vector<Adresse*>::size_type i = 0; i < u.adr.size(); i++)
     {
-        out << "\nL'adresse est : " << *u.adr[i] << std::endl;
+        out << *u.adr[i] << std::endl;
     }
     return out;
 }

@@ -14,7 +14,13 @@ public:
     virtual ~Connexion();
     void ajouterDateDeParticipation();
     template<typename U>
-    friend std::ostream& operator<< (std::ostream& out, const Connexion<U>& c); ;
+    friend std::ostream& operator<< (std::ostream& out, const Connexion<U>& c);
+    template<typename U>
+    friend std::istream& operator>> (std::istream& in, Connexion<U>& c);
+    void setDate(T d)
+    {
+        DateDeParticipation=d;
+    }
 };
 
 #endif // CONNEXION_H

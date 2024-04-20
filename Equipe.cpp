@@ -8,7 +8,7 @@
 Equipe::Equipe(Projet projet, std::string nomEquipe) : projet1(projet), nomEquipe(nomEquipe)
 {
     Participant<std::string>* p;
-    std::cin >>p;
+    std::cin>>p;
     Participant<std::string>* q = new Participant<std::string>(*p);
     membres.push_back(q);
 }

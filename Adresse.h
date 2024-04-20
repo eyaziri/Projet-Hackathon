@@ -16,6 +16,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Adresse& a);
     friend std::istream& operator>>(std::istream& in, Adresse& a);
+    friend std::ostream& operator<<(std::ostream& out, const Adresse* a);
+    friend std::istream& operator>>(std::istream& in, Adresse* a);
 };
 
 #endif // ADRESSE_H

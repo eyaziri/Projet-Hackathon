@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "Equipe.h"
-#include "Resultat.h"
 #include "Participant.h"
 #include "Juge.h"
 #include "Organisateur.h"
@@ -12,7 +11,6 @@
 class Hackathon {
 protected:
     static std::vector<Equipe*> equipe;
-    static std::vector<Resultat*> resultat;
     static std::vector<Participant<std::string>*> participant;
     static std::vector<Organisateur*> organisateur;
     static std::vector<Juge*> juge;
@@ -31,10 +29,6 @@ public:
 
     static std::vector<Equipe*>& getEquipe() {
         return equipe;
-    }
-
-    static std::vector<Resultat*>& getResultat() {
-        return resultat;
     }
 
     static std::vector<Participant<std::string>*>& getParticipant() {
