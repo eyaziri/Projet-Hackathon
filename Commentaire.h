@@ -1,28 +1,41 @@
 #ifndef COMMENTAIRE_H
 #define COMMENTAIRE_H
-#include <string>
 #include <iostream>
 #include <ctime>
-#include <fstream>
+#include <iomanip>
+#include <string>
+
+using namespace std ;
 
 class Commentaire
 {
-     protected:
-        std::string titreCommentaire;
-        std::string texteCommentaire;
-        std::string nomDestinataireCommentaire;
-        std::string nomDestinateurCommentaire;
-        time_t dateDeCommentaire ;
-
     public:
-        Commentaire(std::string="", std::string="", std::string="", std::string="");
+        Commentaire();
         virtual ~Commentaire();
-        friend std::ostream& operator<<(std::ostream&, const Commentaire&);
-        friend std::istream& operator>>(std::istream&, Commentaire&);
-        friend std::ostream& operator<<(std::ostream&, Commentaire*);
-        friend std::istream& operator>>(std::istream&, Commentaire*);
-        static void remplirFichierCommentaire();
-        static void afficherFichierCommentaire(std::fstream&);
+        friend ostream& operator<< (ostream & , Commentaire &);
+        friend istream& operator>> ( istream & , Commentaire & );
+        friend ostream& operator<< (ostream & , Commentaire *);
+        friend istream& operator>> ( istream & , Commentaire * );
+        void remplirFile( Commentaire& );
+        static void afficherFichier();
+
+        void generateTime() {
+        std::time_t currentTime = std::time(nullptr);
+        std::tm* localTime = std::localtime(&currentTime);
+
+        int year = localTime->tm_year + 1900;
+        int month = localTime->tm_mon + 1;
+        int day = localTime->tm_mday;
+
+        datePublication = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
+        }
+
+
+    private:
+        string titre ;
+        string text ;
+        string datePublication ;
+        string auteur ;
 };
 
 #endif // COMMENTAIRE_H

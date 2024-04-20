@@ -18,8 +18,9 @@ std::ostream& operator<<(std::ostream& out, const Projet& p) {
 std::istream& operator>>(std::istream& in, Projet& p) {
     std::cout << "\nDonner le titre du projet : \n";
     in >> p.titreProjet;
+    fflush(stdin);
     std::cout << "\nDonner la description du projet : \n";
-    in >> p.description;
+    getline(in ,p.description);
     std::cout << "\nDonner le nombre de technologies utilisees pour le projet : \n";
     in >> p.technologieAvancee;
     std::cout << "\nDonner le code du projet : \n";

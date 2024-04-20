@@ -1,24 +1,23 @@
 #ifndef ADRESSE_H
 #define ADRESSE_H
-
-#include <iostream>
 #include <string>
+#include <iostream>
 
-class Adresse {
-    int codePostal;
-    std::string adresse;
+using namespace std;
 
-public:
-    Adresse(int code = 0, std::string adr = "");
-    virtual ~Adresse();
+class Adresse
+{
+    private:
+        int codePostal;
+        string adresse ;
+     public:
+        Adresse( int = 0  ,string = "");
+        virtual ~Adresse();
+        friend ostream& operator<< (ostream& out , const Adresse& a);
+        friend istream& operator>> (istream& in ,  Adresse& a);
+        friend ostream& operator<< (ostream& out , const Adresse* a);
+        friend istream& operator>> (istream& in ,  Adresse* a);
 
-    friend void ajouterAdresse(Adresse& a);
-
-    friend std::ostream& operator<<(std::ostream& out, const Adresse& a);
-    friend std::istream& operator>>(std::istream& in, Adresse& a);
-    friend std::ostream& operator<<(std::ostream& out, const Adresse* a);
-    friend std::istream& operator>>(std::istream& in, Adresse* a);
 };
 
 #endif // ADRESSE_H
-

@@ -1,84 +1,94 @@
 #include "Commentaire.h"
-#include "Commentaire.h"
-#include <iostream>
-#include <ctime>
-#include <iomanip>
 #include <fstream>
+#include <string>
 
-Commentaire::Commentaire(std::string titre, std::string texte, std::string destinataire, std::string destinateur): titreCommentaire(titre), texteCommentaire(texte), nomDestinataireCommentaire(destinataire), nomDestinateurCommentaire(destinateur) {
-    dateDeCommentaire = time(0);
+using namespace std ;
+
+Commentaire::Commentaire()
+{
+    //ctor
 }
 
-Commentaire::~Commentaire() {}
-
-std::ostream& operator<<(std::ostream& out, const Commentaire& m) {
-    out << "\n- Titre du commentaire : " << m.titreCommentaire << std::endl;
-    out << "\n- Destinateur du commentaire : " << m.nomDestinateurCommentaire << std::endl;
-    out << "\n- Destinataire du commentaire : " << m.nomDestinataireCommentaire << std::endl;
-    char* dt = ctime(&m.dateDeCommentaire);
-    out << "\n- Date et heure du commentaire : " << dt;
-    out << "\n- Contenu du commentaire : " << m.texteCommentaire << std::endl;
-    return out;
+Commentaire::~Commentaire()
+{
+    //dtor
 }
 
-std::istream& operator>>(std::istream& in, Commentaire& m) {
-    std::cout << "\nDonner le titre du commentaire : \n";
-    std::getline(in, m.titreCommentaire);
-    std::cout << "\nDonner le nom du destinateur du commentaire : \n";
-    std::getline(in, m.nomDestinateurCommentaire);
-    std::cout << "\nDonner le nom du destinataire du commentaire : \n";
-    std::getline(in, m.nomDestinataireCommentaire);
-    std::cout << "\nDonner le contenu du commentaire : \n";
-    std::getline(in, m.texteCommentaire);
-    // Assume we'll set the date when the object is created
-    m.dateDeCommentaire = time(0);
-    return in;
+ostream& operator<< (ostream & out, Commentaire & commentaire)
+{
+    out << "\nTitre : " << commentaire.titre ;
+    out << "\nTexte : " << commentaire.text ;
+    out << "\nAuteur : " << commentaire.auteur ;
+    out << "\nDate de publication : " << commentaire.datePublication<<endl ;
+    return out ;
 }
 
-std::ostream& operator<<(std::ostream& out, Commentaire* m) {
-    out << std::left << std::setw(20) << m->titreCommentaire;
-    out << std::left << std::setw(20) << m->nomDestinataireCommentaire;
-    out << std::left << std::setw(20) << m->nomDestinateurCommentaire;
-    out << std::left << std::setw(20) << m->texteCommentaire;
-    char* dt = ctime(&m->dateDeCommentaire);
-    out << dt << std::endl;
-    return out;
+
+istream & operator>> ( istream & in, Commentaire & commentaire)
+{
+    cout << "\nTitre : " ;
+    in >> commentaire.titre ;
+    fflush(stdin);
+    cout << "\nTexte : " ;
+    getline(in , commentaire.text ) ;
+    cout << "\nAuteur : " ;
+    in >> commentaire.auteur;
+    commentaire.generateTime();
 }
 
-std::istream& operator>>(std::istream& in, Commentaire* m) {
-    std::getline(in, m->titreCommentaire);
-    std::getline(in, m->nomDestinateurCommentaire);
-    std::getline(in, m->nomDestinataireCommentaire);
-    std::getline(in, m->texteCommentaire);
-    in >> m->dateDeCommentaire;
-    return in;
+ostream& operator<< (ostream & out, Commentaire * commentaire)
+{
+    out << commentaire->titre << " " << commentaire->text << " "<< "**" << " " << commentaire->auteur << " " << commentaire->datePublication << " " ;
+    return out ;
 }
 
-void Commentaire::remplirFichierCommentaire() {
-    std::fstream f("fichierCommentaire.txt", std::ios::in | std::ios::out | std::ios::app);
-    if (!f.is_open()) {
-        std::cout << "Erreur lors de l'ouverture du fichier !" << std::endl;
-        exit(-1);
+istream & operator>> ( istream & in, Commentaire * commentaire)
+{
+    string tmp ="";
+    in >> commentaire->titre ;
+    while(tmp != "**")
+    {
+        commentaire->text += tmp ;
+        commentaire->text += " ";
+        in >> tmp ;
+    }
+    in >> commentaire->auteur;
+    in >> commentaire->datePublication ;
+    return in ;
+}
+
+
+void Commentaire::remplirFile(Commentaire& commentaire)
+{
+    ofstream fi ;
+    fi.open("Commentaire.txt" ,ios::app );
+    if (!fi.is_open())
+    {
+        cerr << "error";
+        return ;
     }
 
-    Commentaire m;
-    std::cout << "\n Saisir un commentaire :" << std::endl;
-    std::cin >> m;
-    f << m << std::endl;
-    f.close();
+    fi << &commentaire << endl ;
+    fi.close();
 }
 
-void Commentaire::afficherFichierCommentaire(std::fstream& f) {
-    f.open("fichierCommentaire.txt", std::ios::in | std::ios::out);
-    if (!f.is_open()) {
-        std::cout << "Erreur lors de l'ouverture du fichier !" << std::endl;
-        exit(-1);
+void Commentaire::afficherFichier()
+{
+      ifstream fi ;
+    fi.open("Commentaire.txt" , ios::in);
+    if (!fi.is_open())
+    {
+        cerr << "error";
+        return ;
+    }else{
+    Commentaire commentaire ;
+    while(1){
+        fi >> &commentaire ;
+        if (fi.eof()){
+            break;
+        }
+        cout << commentaire ;
     }
-
-   Commentaire m;
-    f.seekg(0);
-    while (f >> m) {
-        std::cout << m << std::endl;
     }
-    f.close();
+    fi.close();
 }

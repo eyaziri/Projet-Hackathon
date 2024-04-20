@@ -1,30 +1,41 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
-#include <string>
-#include <iostream>
 #include <ctime>
-#include <fstream>
+#include <string>
+
+using namespace std ;
 
 
 class Message
 {
-protected:
-    std::string titre;
-    std::string texte;
-    std::string nomDestinataire;
-    std::string nomDestinateur;
-    time_t dateDeMessage;
+    public:
+        Message();
+        virtual ~Message();
+        friend ostream& operator<< (ostream & , Message &);
+        friend istream& operator>> ( istream & , Message & );
+        friend ostream& operator<< (ostream & , Message *);
+        friend istream& operator>> ( istream & , Message * );
+        void remplirFile( Message& );
+        static void afficherMessages();
 
-public:
-    Message(std::string t = "", std::string txt = "", std::string destinataire = "", std::string destinateur = "");
-    virtual ~Message();
+        void generateTime() {
+        std::time_t currentTime = std::time(nullptr);
+        std::tm* localTime = std::localtime(&currentTime);
 
-    friend std::ostream& operator<<(std::ostream&, const Message&);
-    friend std::istream& operator>>(std::istream&, Message&);
-    friend std::ostream& operator<<(std::ostream&, Message*);
-    friend std::istream& operator>>(std::istream&, Message*);
+        int year = localTime->tm_year + 1900;
+        int month = localTime->tm_mon + 1;
+        int day = localTime->tm_mday;
 
-    static void remplirFichierMessage();
-    static void afficherFichierMessage(std::fstream&);
+        datePublication = std::to_string(day) + "/" + std::to_string(month) + "/" + std::to_string(year);
+        }
+
+
+    private:
+        string titre ;
+        string text ;
+        string datePublication ;
+        string destinateur ;
+        string destinataire ;
 };
+
 #endif // MESSAGE_H

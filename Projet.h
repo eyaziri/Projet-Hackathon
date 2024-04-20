@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+using namespace std ;
+
 class Projet {
 protected:
     int idProjet;
@@ -22,6 +24,15 @@ public:
 
     friend std::istream& operator>>(std::istream&, Projet&);
     friend std::ostream& operator<<(std::ostream&, const Projet&);
+
+    string getTitreProjet()
+    {
+        return titreProjet;
+    }
+    string getDescription()
+    {
+        return description;
+    }
 
     int getIdProjet() const {
         return idProjet;
@@ -62,6 +73,19 @@ public:
     void setScore(float x) {
         score = x;
     }
+    void setTitreProjet(string p)
+    {
+        titreProjet=p;
+    }
+    void setDescription(string d)
+    {
+        description=d;
+    }
+
+    void setTechnologieAvancee(int x) {
+        technologieAvancee=x;
+    }
+
 };
 
 #endif // PROJET_H

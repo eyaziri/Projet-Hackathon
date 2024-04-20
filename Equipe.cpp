@@ -33,14 +33,6 @@ Equipe::Equipe(const Equipe& e)
     }
 }
 
-void Equipe::ajouterMembre()
-{
-    Participant<std::string>* p;
-    std::cin >>p;
-    Participant<std::string>* newParticipant = new Participant<std::string>(*p);
-    membres.push_back(newParticipant);
-}
-
 void Equipe::supprimerMembre()
 {
     int x;
@@ -99,6 +91,40 @@ std::istream& operator>>(std::istream& in, Equipe& e)
     return in;
 }
 
+std::ostream& operator<<(std::ostream& out, Equipe* e)
+ {
+    out << e->getNomEquipe() << " " << e->getProjet1().getTitreProjet() << " " << e->getProjet1().getDescription() << " ** " << e->getProjet1().getTechnologieAvancee() << " " << e->getMembres().size() ;
+    for ( int i=0 ; i<e->getMembres().size() ;i++)
+    {
+        out << " " << e->getMailMembre(i) ;
+    }
+    return out;
+ }
+  std::istream& operator>>(std::istream& in, Equipe* e)
+  {
+    string s1 = "" , s2 = "";
+    int s3 ;
+    in >> e->nomEquipe ;
+    string tmp = "" ;
+    in >> tmp ;
+    while( tmp != "**")
+    {
+        s2 += tmp ;
+        s2 += " " ;
+        in >> tmp ;
+    }
+    in >> s3 ;
+    e->setProjet(s1,s2,s3);
+    int taille ;
+    in >> taille ;
+    for ( int i=0 ; i<taille ; i++)
+    {
+        in >> tmp ;
+        e->setMembre(tmp , i) ;
+    }
+  }
+
+
 Equipe& Equipe::operator=(const Equipe& e)
 {
     if (this != &e)
@@ -122,85 +148,36 @@ Equipe& Equipe::operator=(const Equipe& e)
 
 void Equipe::remplirFichierEquipe(Equipe e)
 {
-    std::fstream f;
-    f.open("fichierEquipe.txt", std::ios::out | std::ios::in |std::ios::trunc);
-    if (!f.is_open())
+    ofstream fi ;
+    fi.open("Equipe.txt" , ios::app );
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
+        cerr << "error";
+        return ;
     }
-    f << &e << std::endl;
-    f.close();
+
+    fi << &e ;
+    fi.close();
 }
 
-void Equipe::afficherFichierEquipe(std::fstream& f)
+void Equipe::afficherFichierEquipe()
 {
-    f.open("fichierEquipe.txt", std::ios::out| std::ios::in |std::ios::trunc);
-    if (!f.is_open())
+    ifstream fi ;
+    fi.open("Equipe.txt" , ios::in);
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
-    }
-
-    Equipe *e;
-    while (f >> e)
-    {
-        std::cout << e << std::endl;
-    }
-
-    f.close();
-}
-std::vector<Equipe> Equipe::chargerDepuisFichier(const std::string& nomFichier)
-{
-    std::vector<Equipe> equipes;
-
-    std::ifstream fichier(nomFichier);
-    if (!fichier.is_open())
-    {
-        std::cerr << "Erreur lors de l'ouverture du fichier " << nomFichier << std::endl;
-        return equipes;
-    }
-
-    std::string ligne;
-    while (std::getline(fichier, ligne))
-    {
-        std::istringstream iss(ligne);
-        Equipe equipe;
-        iss >> equipe;
-        equipes.push_back(equipe);
-    }
-
-    fichier.close();
-
-    return equipes;
-}
-std::ostream& operator<<(std::ostream& out, const Equipe* e)
- {
-   out << "Le pseudo de l'equipe est : " << e->nomEquipe << std::endl;
-    out << e->projet1 << std::endl;
-    for (size_t i = 0; i < e->membres.size(); i++)
-    {
-        out << *(e->membres[i]) << std::endl;
-    }
-    return out;
- }
-  std::istream& operator>>(std::istream& in, Equipe* e)
-  {
-      std::cout << "\n Donner le pseudo de votre equipe : \n";
-    in >> e->nomEquipe;
-    in >> e->projet1;
-    char addMore;
-    do
-    {
-        std::cout << "Voulez-vous ajouter un nouveau membre ? (O/N) : ";
-        std::cin >> addMore;
-        if (addMore == 'O' || addMore == 'o')
-        {
-            Participant<std::string>* p= new Participant<std::string>();
-            std::cin >> *p;
-            e->membres.push_back(p);
+        cerr << "error";
+        return ;
+    }else{
+    Equipe equipe;
+    while(1){
+        fi >> &equipe ;
+        if (fi.eof()){
+            break;
         }
+        cout << equipe ;
     }
-    while (addMore == 'O' || addMore == 'o');
-    return in;
-  }
+    }
+    fi.close();
+}
+

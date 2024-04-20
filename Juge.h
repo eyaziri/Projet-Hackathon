@@ -1,12 +1,12 @@
 #ifndef JUGE_H
 #define JUGE_H
 
-#include "UtilisateurPlatforme.h"
+#include "UtilisateurPlateforme.h"
 #include "Projet.h"
 #include <string>
 #include <vector>
 #include <iostream>
-#include "UtilisateurPlatforme.h"
+
 
 class Juge : public UtilisateurPlatforme, public Projet
 {
@@ -19,7 +19,6 @@ public:
     Juge(int = 0, std::string="", std::string="",std::string="");
     virtual ~Juge();
 
-    void sinscrire();
     void communiquerViaMessage();
     void communiquerViaCommentaire();
     void DonnerNoteOriginaliteDeProjet();
@@ -28,6 +27,9 @@ public:
 
     friend std::istream& operator>>(std::istream& in, Juge& juge);
     friend std::ostream& operator<<(std::ostream& out, const Juge& juge);
+    friend std::istream& operator>>(std::istream& in, Juge * juge);
+    friend std::ostream& operator<<(std::ostream& out, const Juge * juge);
+
     Juge& operator=(const Juge& autre);
 
     void evaluerProjets();
@@ -37,6 +39,9 @@ public:
     static void afficherFichierJuge(std::fstream&);
 
     void remplirIdentiteDesProjetsJugeesParCeJuge();
+
+
+
     const std::vector<int>& getIdentiteDesProjetsJugeesParCeJuge() const {
         return identiteDesProjetsJugeesParCeJuge;
     }

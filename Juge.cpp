@@ -3,10 +3,10 @@
 #include<vector>
 #include <iostream>
 #include "Projet.h"
-#include"UtilisateurPlatforme.h"
+#include"UtilisateurPlateforme.h"
 #include "Juge.h"
-#include "Hackathon.h"
 #include <algorithm>
+#include <fstream>
 
 Juge::Juge(int id,std::string nom, std::string prenom, std::string Ae ) : idJuge(id), UtilisateurPlatforme(nom, prenom, Ae) {}
 
@@ -114,11 +114,7 @@ void Juge::DonnerNoteQualiteCodeDeProjet()
     }
 }
 
-void Juge::sinscrire()
-{
-    std::cout << "S'inscrire à un hackathon..." << std::endl;
-    UtilisateurPlatforme::sinscrire();
-}
+
 
 
 void Juge::communiquerViaMessage()
@@ -137,36 +133,59 @@ bool Juge::comparerJugesParScore(const Juge* a, const Juge* b)
 {
     return a->Projet::getScore() < b->Projet::getScore();
 }
+
+//**********************************************************************************************************//
+
+std::ostream& operator<<(std::ostream& out, const Juge * juge)
+{
+    out << juge->nom << " " << juge->prenom << " " << juge->adresseEmail << " " << juge->CodeUtilisateur << " " << juge->idJuge ;
+    return out ;
+}
+
+std::istream& operator>>(std::istream& in, Juge * juge)
+{
+    in >> juge->nom ;
+    in >> juge->prenom ;
+    in >> juge->adresseEmail ;
+    in >> juge->CodeUtilisateur ;
+    in >> juge->idJuge ;
+    return in ;
+}
+
 //**********************************************************************************************************//
 void Juge::remplirFichierJuge(Juge j)
 {
-    std::fstream f;
-    f.open("fichierJuge.txt", std::ios::out | std::ios::in |std::ios::trunc);
-    if (!f.is_open())
+   ofstream fi ;
+    fi.open("Juge.txt" , ios::app );
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
+        cerr << "error";
+        return ;
     }
-    f << j << std::endl;
-    f.close();
+
+    fi << &j << endl ;
+    fi.close();
 }
 //********************************************************************************************//
 void Juge::afficherFichierJuge(std::fstream& f)
 {
-    f.open("fichierJuge.txt" , std::ios::out| std::ios::in |std::ios::trunc);
-    if (!f.is_open())
+    ifstream fi ;
+    fi.open("Juge.txt" , ios::in);
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
+        cerr << "error";
+        return ;
+    }else{
+    Juge j ;
+    while(1){
+        fi >> &j ;
+        if (fi.eof()){
+            break;
+        }
+        cout << j ;
     }
-    f.seekg(0);
-    Juge j;
-    while (f >> j)
-    {
-        std::cout << j << std::endl;
     }
-
-    f.close();
+    fi.close();
 }
 
 void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
@@ -177,7 +196,7 @@ void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
     }
 }
 
-void Juge::ajouterUnProjetPourLEvaluer()
+/*void Juge::ajouterUnProjetPourLEvaluer()
 {
     int nombreDeLequipeChoisi;
     int b;
@@ -210,9 +229,9 @@ void Juge::ajouterUnProjetPourLEvaluer()
         }
     }
     while (addMore == 'O' || addMore == 'o');
-}
+}*/
 //********************************************************************************************//
-void Juge::evaluerProjets()
+/*void Juge::evaluerProjets()
 {
     ajouterUnProjetPourLEvaluer();
 
@@ -221,4 +240,4 @@ void Juge::evaluerProjets()
         p->setScore(p->getNoteFiabiliteDeProjet() + p->getNoteOriginaliteDeProjet() + p->getNoteQualiteCode());
     }
     std::cout<<"votre projet est evalue avec succes ."<<std::endl;
-}
+}*/

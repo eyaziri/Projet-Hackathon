@@ -1,47 +1,41 @@
-#include"Adresse.h"
-#include <string>
-#include <vector>
-#include <iostream>
-#include <iomanip>
+#include "Adresse.h"
+using namespace std ;
 
-
-Adresse::Adresse(int code, std::string adr) : codePostal(code), adresse(adr) {}
-
-Adresse::~Adresse() {}
-
-void ajouterAdresse(Adresse& a) {
-    std::cout << "Donner votre numero de code postal : \n";
-    std::cin >> a.codePostal;
-
-    std::cout << "Donner votre adresse complete : \n";
-    std::cin.ignore();
-    std::getline(std::cin, a.adresse);
+Adresse::Adresse(int code , string adresse)
+{
+    this->codePostal = code ;
+    this->adresse = adresse ;
 }
 
-std::ostream& operator<<(std::ostream& out, const Adresse& a) {
-    out << "\n L'adresse est : \n" << a.adresse << std::endl;
-    out << "\nLe code postal est : \n" << a.codePostal << std::endl;
+Adresse::~Adresse()
+{
+}
+ostream& operator<< (ostream& out , const Adresse& a)
+{
+    out << "\nadresse est : " << a.adresse ;
+    out<<"\nLe code postal est :\n "<<a.codePostal;
     return out;
+
 }
-
-std::istream& operator>>(std::istream& in, Adresse& a) {
-    std::cout << "\n Entrez votre adresse de domicile: \n";
-    std::cin.ignore();
-    std::getline(in, a.adresse);
-
-    std::cout << "\n Entrez votre code postal : \n";
-    in >> a.codePostal;
-
+istream& operator>> (istream& in ,  Adresse& a)
+{
+    cout << "\nentrer l'adresse domicile : \n" ;
+    in>> a.adresse ;
+    cout<<"\nEntrer le code postal :\n ";
+    in>>a.codePostal;
     return in;
 }
-std::ostream& operator<<(std::ostream& out, const Adresse* a)
+ostream& operator<< (ostream& out , const Adresse* a)
 {
-    out << a->codePostal << std::setw(2) << a->adresse << std::setw(2);
-    return out ;
+    out << "\nadresse est : " << a->adresse ;
+    out<<"\nLe code postal est :\n "<<a->codePostal;
+    return out;
 }
-std::istream& operator>>(std::istream& in, Adresse* a)
+istream& operator>> (istream& in ,  Adresse* a)
 {
-    in >> a->codePostal ;
-    in >> a->adresse ;
-    return in ;
+     cout << "\nentrer l'adresse domicile : \n" ;
+    in>> a->adresse ;
+    cout<<"\nEntrer le code postal :\n ";
+    in>>a->codePostal;
+    return in;
 }

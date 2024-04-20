@@ -22,7 +22,6 @@ public:
     Equipe(const Equipe& autre);
     virtual ~Equipe();
 
-    void ajouterMembre();
     void supprimerMembre();
 
     friend std::ostream& operator<<(std::ostream& out, const Equipe& equipe);
@@ -33,7 +32,7 @@ public:
     Equipe& operator=(const Equipe& autre);
 
     static void remplirFichierEquipe(Equipe);
-    static void afficherFichierEquipe(std::fstream&);
+    static void afficherFichierEquipe();
 
 //************************************************************************************************//
     std::string getNomEquipe() const {
@@ -63,11 +62,32 @@ public:
         }
         return "Aucune Equipe";
     }
-   //***************************************************************************************************//
-    static std::vector<Equipe> chargerDepuisFichier(const std::string& nomFichier);
+
     //***************************************************************************************************//
     int getidProjet1(){
     return projet1.getIdProjet();
+    }
+
+    std::vector<Participant<std::string>*> getMembres()
+    {
+        return membres ;
+    }
+
+    string getMailMembre( int indx)
+    {
+        return membres[indx]->getAdresseEmail() ;
+    }
+
+    void setProjet(string s1 ,string s2 ,int s3)
+    {
+        projet1.setTitreProjet(s1);
+        projet1.setDescription(s2);
+        projet1.setTechnologieAvancee(s3);
+    }
+
+    void setMembre( string s , int indx)
+    {
+        membres[indx]->setAdresseEmail(s) ;
     }
 
 };
