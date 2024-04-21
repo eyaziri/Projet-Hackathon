@@ -6,13 +6,14 @@
 #include "Participant.h"
 #include "Juge.h"
 #include "Organisateur.h"
+#include <list>
 
 
 class Hackathon {
 protected:
     static std::vector<Equipe*> equipe;
     static std::vector<Participant<std::string>*> participant;
-    static std::vector<Organisateur*> organisateur;
+    static std::list<Organisateur*> organisateur;
     static std::vector<Juge*> juge;
 
 public:
@@ -35,7 +36,7 @@ public:
         return participant;
     }
 
-    static std::vector<Organisateur*>& getOrganisateur() {
+    static std::list<Organisateur*>& getOrganisateur() {
         return organisateur;
     }
 

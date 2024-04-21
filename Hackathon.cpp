@@ -12,7 +12,7 @@
 
 std::vector<Equipe*> Hackathon::equipe;
 std::vector<Participant<std::string>*> Hackathon::participant;
-std::vector<Organisateur*> Hackathon::organisateur;
+std::list<Organisateur*> Hackathon::organisateur;
 std::vector<Juge*> Hackathon::juge;
 
 Hackathon::Hackathon() {
@@ -43,8 +43,11 @@ Hackathon::~Hackathon() {
     }
     participant.clear();
 
-    for (std::vector<Organisateur*>::size_type j = 0; j < organisateur.size(); j++) {
-        delete organisateur[j];
+    for (std::list<Organisateur*>::size_type j = 0; j < organisateur.size(); j++) {
+        for ( auto* ptr : organisateur)
+        {
+            delete ptr ;
+        }
     }
     organisateur.clear();
 
@@ -66,10 +69,10 @@ Hackathon::Hackathon(const Hackathon &h) {
         participant.push_back(p);
     }
 
-    for (std::vector<Organisateur*>::size_type j = 0; j < h.organisateur.size(); j++) {
-        Organisateur* p = new Organisateur(*(h.organisateur[j]));
-        organisateur.push_back(p);
-    }
+    for (auto it = h.organisateur.begin(); it != h.organisateur.end(); ++it) {
+            Organisateur* p = new Organisateur(**it);
+            organisateur.push_back(p);
+        }
 
     for (std::vector<Juge*>::size_type j = 0; j < h.juge.size(); j++) {
         Juge* p = new Juge(*(h.juge[j]));
@@ -88,8 +91,8 @@ std::ostream& operator<<(std::ostream &out, const Hackathon &h) {
         out << *(h.participant[j]) << std::endl;
     }
 
-     for (std::vector<Organisateur*>::size_type j = 0; j < h.organisateur.size(); j++) {
-        out << *(h.organisateur[j]) << std::endl;
+     for (auto it = h.organisateur.begin(); it != h.organisateur.end(); ++it) {
+            out << **it << std::endl;
     }
 
      for (std::vector<Juge*>::size_type j = 0; j < h.juge.size(); j++) {
@@ -142,16 +145,18 @@ Hackathon& Hackathon::operator=(const Hackathon &h) {
         }
 
 
-         for (std::vector<Organisateur*>::size_type p = 0; p < organisateur.size(); p++) {
-            delete organisateur[p];
+         for (std::list<Organisateur*>::size_type p = 0; p < organisateur.size(); p++) {
+            for ( auto* ptr : organisateur)
+            {
+                delete ptr ;
+            }
         }
         organisateur.clear();
 
-        for (std::vector<Organisateur*>::size_type p = 0; p < h.organisateur.size(); p++) {
-            Organisateur* u = new Organisateur(*(h.organisateur[p]));
-            organisateur.push_back(u);
+        for (auto it = h.organisateur.begin(); it != h.organisateur.end(); ++it) {
+            Organisateur* p = new Organisateur(**it);
+            organisateur.push_back(p);
         }
-
 
          for (std::vector<Juge*>::size_type p = 0; p < juge.size(); p++) {
             delete juge[p];
@@ -174,7 +179,7 @@ void Hackathon::pushBackUnElementJuge(Juge*j ,Hackathon& hackathon)
 {
     hackathon.juge.push_back(j);
 }
-void Hackathon::pushBackUnElementOrganisateur(Organisateur*o ,Hackathon& hackathon)
+void Hackathon::pushBackUnElementOrganisateur(Organisateur* o ,Hackathon& hackathon)
 {
    hackathon.organisateur.push_back(o);
 }
