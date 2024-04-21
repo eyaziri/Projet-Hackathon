@@ -3,11 +3,11 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include "UtilisateurPlatforme.h"
+#include "UtilisateurPlateforme.h"
 #include "Equipe.h"
-#include "Hackathon.h"
 #include "Juge.h"
 #include "Projet.h"
+#include <fstream>
 
 Organisateur::Organisateur(int id,std::string nom, std::string prenom, std::string Ae ) : idOrganisateur(id), UtilisateurPlatforme(nom, prenom, Ae) {}
 
@@ -25,11 +25,6 @@ void Organisateur::communiquerViaCommentaire()
     UtilisateurPlatforme::communiquerViaCommentaire();
 }
 
-void Organisateur::sinscrire()
-{
-    std::cout << "S'inscrire à un hackathon..." << std::endl;
-    UtilisateurPlatforme::sinscrire();
-}
 
 std::ostream& operator<<(std::ostream& out, const Organisateur& o)
 {
@@ -48,44 +43,61 @@ std::istream& operator>>(std::istream& in, Organisateur& o)
     return in;
 }
 
+std::ostream& operator<<(std::ostream& out , const Organisateur* organisateur )
+{
+   out << organisateur->nom << " " << organisateur->prenom << " " << organisateur->adresseEmail << " " << organisateur->idOrganisateur <<"\n";
+   return out ;
+}
+
+std::istream& operator>>(std::istream& in, Organisateur* organisateur )
+{
+    in >> organisateur->nom ;
+    in >> organisateur->prenom ;
+    in >> organisateur->adresseEmail ;
+    in >> organisateur->idOrganisateur ;
+    return in ;
+}
 
 
 void Organisateur::remplirFichierOrganisateur(Organisateur o)
 {
-    std::fstream f;
-    f.open("fichierOrganisateur.txt", std::ios::out | std::ios::app);
-    if (!f.is_open())
+    ofstream fi ;
+    fi.open("Organisateur.txt" , ios::app );
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
+        cerr << "error";
+        return ;
     }
-    f << o << std::endl;
-    f.close();
+
+    fi << &o << endl ;
+    fi.close();
 }
-
-void Organisateur::afficherFichierOrganisateur(std::fstream& f)
+void Organisateur::afficherFichierOrganisateur()
 {
-    f.open("fichierOrganisateur.txt", std::ios::in);
-    if (!f.is_open())
+    ifstream fi ;
+    fi.open("Organisateur.txt" , ios::in);
+    if (!fi.is_open())
     {
-        std::cerr << "Erreur lors de l'ouverture du fichier." << std::endl;
-        return;
+        cerr << "error";
+        return ;
+    }else{
+    Organisateur org ;
+    while(1){
+        fi >> &org ;
+        if (fi.eof()){
+            break;
+        }
+        cout << org ;
     }
-
-    Organisateur o;
-    while (f >> o)
-    {
-        std::cout << o << std::endl;
     }
-
-    f.close();
+    fi.close();
 }
 //********************************************************************************************************************//
-void Organisateur::annoncerEtRecompenserGagnant()
+void Organisateur::annoncerEtRecompenserGagnant( vector<Equipe*>& equipes , vector<Juge*>& juges)
 {
     try
     {
-        if (Hackathon::getJuge().empty())
+        if (juges.empty())
         {
             throw std::logic_error("Aucun juge disponible pour évaluer les projets.");
         }
@@ -97,12 +109,12 @@ void Organisateur::annoncerEtRecompenserGagnant()
 
         std::vector<Projet*> tousProjets;
 
-        for (std::vector<Juge*>::size_type i = 0; i < Hackathon::getJuge().size(); ++i)
+        for (std::vector<Juge*>::size_type i = 0; i < juges.size(); ++i)
         {
-            for (int j = 0; j < Hackathon::getJuge()[i]->getProjectSize(); ++j)
+            for (int j = 0; j < juges[i]->getProjectSize(); ++j)
 
             {
-                tousProjets.push_back(Hackathon::getJuge()[i]->getOneElementFromProject(j));
+                tousProjets.push_back(juges[i]->getOneElementFromProject(j));
             }
         }
 
@@ -116,11 +128,11 @@ void Organisateur::annoncerEtRecompenserGagnant()
         Projet* premierProjet = tousProjets.front();
         int idPremierProjet = premierProjet->getIdProjet();
         std::string nomEquipePremier = "Inconnue";
-        for (std::vector<Equipe*>::size_type j = 0; j < Hackathon::getEquipe().size(); ++j)
+        for (std::vector<Equipe*>::size_type j = 0; j < equipes.size(); ++j)
         {
-            if (Hackathon::getEquipe()[j]->getidProjet1() == idPremierProjet)
+            if (equipes[j]->getidProjet1() == idPremierProjet)
             {
-                nomEquipePremier = Hackathon::getEquipe()[j]->getNomEquipeParIdProjet(idPremierProjet);
+                nomEquipePremier = equipes[j]->getNomEquipeParIdProjet(idPremierProjet);
                 break;
             }
         }
@@ -134,11 +146,11 @@ void Organisateur::annoncerEtRecompenserGagnant()
             int idDeuxiemeProjet = deuxiemeProjet->getIdProjet();
 
             std::string nomEquipeDeuxieme = "Inconnue";
-           for (std::vector<Equipe*>::size_type j = 0; j < Hackathon::getEquipe().size(); ++j)
+           for (std::vector<Equipe*>::size_type j = 0; j < equipes.size(); ++j)
             {
-                if (Hackathon::getEquipe()[j]->getidProjet1() == idDeuxiemeProjet)
+                if (equipes[j]->getidProjet1() == idDeuxiemeProjet)
                 {
-                    nomEquipeDeuxieme = Hackathon::getEquipe()[j]->getNomEquipeParIdProjet(idDeuxiemeProjet);
+                    nomEquipeDeuxieme = equipes[j]->getNomEquipeParIdProjet(idDeuxiemeProjet);
                     break;
                 }
             }
@@ -153,11 +165,11 @@ void Organisateur::annoncerEtRecompenserGagnant()
             int idTroisiemeProjet = troisiemeProjet->getIdProjet();
 
             std::string nomEquipeTroisieme = "Inconnue";
-            for (std::vector<Equipe*>::size_type j = 0; j < Hackathon::getEquipe().size(); ++j)
+            for (std::vector<Equipe*>::size_type j = 0; j < equipes.size(); ++j)
             {
-                if (Hackathon::getEquipe()[j]->getidProjet1()== idTroisiemeProjet)
+                if (equipes[j]->getidProjet1()== idTroisiemeProjet)
                 {
-                    nomEquipeTroisieme = Hackathon::getEquipe()[j]->getNomEquipeParIdProjet(idTroisiemeProjet);
+                    nomEquipeTroisieme = equipes[j]->getNomEquipeParIdProjet(idTroisiemeProjet);
                     break;
                 }
             }
@@ -173,11 +185,11 @@ void Organisateur::annoncerEtRecompenserGagnant()
             int idProjetGagnant = projetGagnant->getIdProjet();
 
             std::string nomEquipeGagnante = "Inconnue";
-            for (std::vector<Equipe*>::size_type j = 0; j < Hackathon::getEquipe().size(); ++j)
+            for (std::vector<Equipe*>::size_type j = 0; j < equipes.size(); ++j)
             {
-                if (Hackathon::getEquipe()[j]->getidProjet1() == idProjetGagnant)
+                if (equipes[j]->getidProjet1() == idProjetGagnant)
                 {
-                    nomEquipeGagnante = Hackathon::getEquipe()[j]->getNomEquipeParIdProjet(idProjetGagnant);
+                    nomEquipeGagnante = equipes[j]->getNomEquipeParIdProjet(idProjetGagnant);
                     break;
                 }
             }

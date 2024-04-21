@@ -1,7 +1,7 @@
 #include "Hackathon.h"
 #include "Equipe.h"
 
-#include "UtilisateurPlatforme.h"
+#include "UtilisateurPlateforme.h"
 #include "Participant.h"
 #include "Juge.h"
 #include "Organisateur.h"

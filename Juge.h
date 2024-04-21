@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Equipe.h"
 
 
 class Juge : public UtilisateurPlatforme, public Projet
@@ -32,7 +33,7 @@ public:
 
     Juge& operator=(const Juge& autre);
 
-    void evaluerProjets();
+    void evaluerProjets(vector<Equipe*>&);
     static bool comparerJugesParScore(const Juge* a, const Juge* b);
 
     static void remplirFichierJuge(Juge j);
@@ -54,7 +55,7 @@ public:
     {
         return project[j];
     }
-    void ajouterUnProjetPourLEvaluer();
+    void ajouterUnProjetPourLEvaluer(vector<Equipe*>&);
 };
 
 #endif // JUGE_H

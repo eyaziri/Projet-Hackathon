@@ -196,7 +196,7 @@ void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
     }
 }
 
-/*void Juge::ajouterUnProjetPourLEvaluer()
+void Juge::ajouterUnProjetPourLEvaluer( vector<Equipe*>& equipes)
 {
     int nombreDeLequipeChoisi;
     int b;
@@ -209,17 +209,17 @@ void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
         if (addMore == 'O' || addMore == 'o')
         {
             std::cout<<"\nVoila les equipes existante "<<std::endl;
-            for(int i=0; i<Hackathon::getEquipe().size(); i++)
+            for(int i=0; i<equipes.size(); i++)
             {
-                std::cout<<i<<"-"<< *Hackathon::getEquipe()[i];
+                std::cout<<i<<"-"<< *equipes[i];
             }
             std::cout<<"\nChoisis une equipe\n"<<std::endl;
             std::cin>>nombreDeLequipeChoisi;
-            for(int i=0; i<Hackathon::getEquipe().size(); i++)
+            for(int i=0; i<equipes.size(); i++)
             {
                 if(i==nombreDeLequipeChoisi)
                 {
-                    p= Hackathon::getEquipe()[nombreDeLequipeChoisi]->getProjet1();
+                    p= equipes[nombreDeLequipeChoisi]->getProjet1();
                 }
             }
             project.push_back(&p);
@@ -229,15 +229,15 @@ void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
         }
     }
     while (addMore == 'O' || addMore == 'o');
-}*/
+}
 //********************************************************************************************//
-/*void Juge::evaluerProjets()
+void Juge::evaluerProjets(vector<Equipe*>& equipes)
 {
-    ajouterUnProjetPourLEvaluer();
+    ajouterUnProjetPourLEvaluer(equipes);
 
     for (Projet* p : project)
     {
         p->setScore(p->getNoteFiabiliteDeProjet() + p->getNoteOriginaliteDeProjet() + p->getNoteQualiteCode());
     }
     std::cout<<"votre projet est evalue avec succes ."<<std::endl;
-}*/
+}

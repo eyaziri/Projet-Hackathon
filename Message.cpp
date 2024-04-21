@@ -88,7 +88,8 @@ void Message::afficherMessages()
     Message message ;
     while(1){
         fi >> &message ;
-        if (fi.eof()){
+        if (fi.eof())
+        {
             break;
         }
         cout << message ;

@@ -1,6 +1,7 @@
 #include "UtilisateurPlateforme.h"
 #include "Adresse.h"
 #include "Message.h"
+#include "Commentaire.h"
 #include <fstream>
 #include <string>
 #include <iostream>
