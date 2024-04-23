@@ -100,17 +100,17 @@ UtilisateurPlatforme& UtilisateurPlatforme::operator=(const UtilisateurPlatforme
 
 void UtilisateurPlatforme::communiquerViaMessage()
 {
-    cout << "----------------Tous les messages--------------------"<<endl;
-    Message::afficherMessages();
     Message message ;
     cin >> message ;
     message.remplirFile(message);
+    //cout << "----------------Tous les messages--------------------"<<endl;
+    //Message::afficherMessages();
 }
 //*********************************************************************************************//
 void UtilisateurPlatforme::communiquerViaCommentaire()
 {
-   cout << "----------------Tous les commentaires--------------------"<<endl;
-   Commentaire::afficherFichier();
+   //cout << "----------------Tous les commentaires--------------------"<<endl;
+   //Commentaire::afficherFichier();
    Commentaire commentaire ;
    cin >> commentaire ;
    commentaire.remplirFile(commentaire);

@@ -92,24 +92,24 @@ void Organisateur::afficherFichierOrganisateur()
     }
     fi.close();
 }
-//********************************************************************************************************************//
+//*******************************************//
 void Organisateur::annoncerEtRecompenserGagnant( vector<Equipe*>& equipes , vector<Juge*>& juges)
 {
     try
     {
         if (juges.empty())
         {
-            throw std::logic_error("Aucun juge disponible pour évaluer les projets.");
+            throw std::logic_error("Aucun juge disponible pour evaluer les projets.");
         }
 
-        auto compareProjectsByScore = [](const Projet* a, const Projet* b)
+        auto compareProjectsByScore = [](Projet* a, Projet* b)
         {
             return a->getScore() > b->getScore();
         };
 
         std::vector<Projet*> tousProjets;
 
-        for (std::vector<Juge*>::size_type i = 0; i < juges.size(); ++i)
+        for (int i = 0; i < juges.size(); ++i)
         {
             for (int j = 0; j < juges[i]->getProjectSize(); ++j)
 

@@ -98,4 +98,3 @@ void Message::afficherMessages()
     fi.close();
 }
 
-

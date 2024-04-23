@@ -87,9 +87,9 @@ std::ostream& operator<<(std::ostream &out, const Hackathon &h) {
         out << *(h.equipe[p]) << std::endl;
     }
 
-     for (int j = 0; j < h.participant.size(); j++) {
+    /* for (int j = 0; j < h.participant.size(); j++) {
         out << *(h.participant[j]) << std::endl;
-    }
+    }*/
 
      for (auto it = h.organisateur.begin(); it != h.organisateur.end(); ++it) {
             out << **it << std::endl;
@@ -103,13 +103,6 @@ std::ostream& operator<<(std::ostream &out, const Hackathon &h) {
 
 std::istream& operator>>(std::istream &in, Hackathon &h) {
 
-    Equipe* q = new Equipe();
-    in >> *q;
-    h.equipe.push_back(q);
-
-    Participant<std::string>* p = new Participant<std::string>();
-    in >> p;
-    h.participant.push_back(p);
 
     Organisateur* o = new Organisateur();
     in >> *o;
@@ -118,6 +111,15 @@ std::istream& operator>>(std::istream &in, Hackathon &h) {
     Juge* j = new Juge();
     in >> *j;
     h.juge.push_back(j);
+
+    Equipe* q = new Equipe();
+    in >> *q;
+    h.equipe.push_back(q);
+
+    /*Participant<std::string>* p = new Participant<std::string>();
+    in >> p;
+    h.participant.push_back(p);*/
+
 
     return in;
 }
@@ -134,7 +136,7 @@ Hackathon& Hackathon::operator=(const Hackathon &h) {
             equipe.push_back(e);
         }
 
-        for (int p = 0; p < participant.size(); p++) {
+        /*for (int p = 0; p < participant.size(); p++) {
             delete participant[p];
         }
         participant.clear();
@@ -142,7 +144,7 @@ Hackathon& Hackathon::operator=(const Hackathon &h) {
         for (int i = 0; i < h.participant.size(); i++) {
             Participant<std::string>* p = new Participant<std::string>(*(h.participant[i]));
             participant.push_back(p);
-        }
+        }*/
 
 
          for (std::list<Organisateur*>::size_type p = 0; p < organisateur.size(); p++) {

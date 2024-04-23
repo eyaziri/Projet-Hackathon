@@ -21,8 +21,9 @@ Juge::~Juge()
 
 std::ostream& operator<<(std::ostream& out, const Juge& j)
 {
-    const UtilisateurPlatforme* q = &j;
-    out << *q;
+    out<<"\nLe nom: "<<j.nom;
+    out<<"\nLe prenom "<<j.prenom;
+    out<<"\nL' adresse email: "<<j.adresseEmail;
     out << "Identifiant du juge : " << j.idJuge << std::endl;
     for (size_t i = 0; i < j.project.size(); ++i)
     {
@@ -61,57 +62,46 @@ Juge& Juge::operator=(const Juge& j)
     return *this;
 }
 
-void Juge::DonnerNoteOriginaliteDeProjet()
+void Juge::DonnerNoteOriginaliteDeProjet(Projet& p)
 {
-    for (size_t i = 0; i < project.size(); ++i)
-    {
-        if (project[i]->getTechnologieAvancee() > 15)
+        if (p.getTechnologieAvancee() > 15)
+
+           {
+            p.setNoteOriginaliteDeProjet(20);
+           }
+
+        else if (p.getTechnologieAvancee() < 10 && p.getTechnologieAvancee()>5)
+
+            {p.setNoteOriginaliteDeProjet(15);}
+
+        else if (p.getTechnologieAvancee() < 5)
         {
-            project[i]->setNoteOriginaliteDeProjet(20);
+            p.setNoteOriginaliteDeProjet(10);
         }
-        else if (project[i]->getTechnologieAvancee() > 10)
-        {
-            project[i]->setNoteOriginaliteDeProjet(15);
-        }
-        else if (project[i]->getTechnologieAvancee() > 5)
-        {
-            project[i]->setNoteOriginaliteDeProjet(10);
-        }
-        else
-        {
-            project[i]->setNoteOriginaliteDeProjet(5);
-        }
-    }
 }
 
-void Juge::DonnerNoteFiabiliteDeProjet()
+void Juge::DonnerNoteFiabiliteDeProjet(Projet &p)
 {
-    for (size_t i = 0; i < project.size(); ++i)
-    {
-        if (project[i]->getNoteOriginaliteDeProjet() > 10)
+        if (p.getNoteOriginaliteDeProjet() > 10)
         {
-            project[i]->setNoteFiabiliteDeProjet(15);
+            p.setNoteFiabiliteDeProjet(15);
         }
         else
         {
-            project[i]->setNoteFiabiliteDeProjet(9);
+            p.setNoteFiabiliteDeProjet(9);
         }
-    }
 }
 
-void Juge::DonnerNoteQualiteCodeDeProjet()
+void Juge::DonnerNoteQualiteCodeDeProjet(Projet& p)
 {
-    for (size_t i = 0; i < project.size(); i++)
-    {
-        if (project[i]->getNoteFiabiliteDeProjet() > 10)
+        if (p.getNoteFiabiliteDeProjet() > 10)
         {
-            project[i]->setNoteQualiteCode(15);
+            p.setNoteQualiteCode(15);
         }
         else
         {
-            project[i]->setNoteQualiteCode(10);
+            p.setNoteQualiteCode(10);
         }
-    }
 }
 
 
@@ -129,7 +119,7 @@ void Juge::communiquerViaCommentaire()
     UtilisateurPlatforme::communiquerViaCommentaire();
 }
 
-bool Juge::comparerJugesParScore(const Juge* a, const Juge* b)
+bool Juge::comparerJugesParScore( Juge* a,  Juge* b)
 {
     return a->Projet::getScore() < b->Projet::getScore();
 }
@@ -167,7 +157,7 @@ void Juge::remplirFichierJuge(Juge j)
     fi.close();
 }
 //********************************************************************************************//
-void Juge::afficherFichierJuge(std::fstream& f)
+void Juge::afficherFichierJuge()
 {
     ifstream fi ;
     fi.open("Juge.txt" , ios::in);
@@ -195,11 +185,11 @@ void Juge::remplirIdentiteDesProjetsJugeesParCeJuge()
         identiteDesProjetsJugeesParCeJuge.push_back(project[i]->getIdProjet());
     }
 }
+//*****************************************************************************************//
 
 void Juge::ajouterUnProjetPourLEvaluer( vector<Equipe*>& equipes)
 {
     int nombreDeLequipeChoisi;
-    int b;
     Projet p;
     char addMore;
     do
@@ -208,13 +198,16 @@ void Juge::ajouterUnProjetPourLEvaluer( vector<Equipe*>& equipes)
         std::cin >> addMore;
         if (addMore == 'O' || addMore == 'o')
         {
-            std::cout<<"\nVoila les equipes existante "<<std::endl;
+            std::cout<<"\nVoila les equipes existante : "<<std::endl;
             for(int i=0; i<equipes.size(); i++)
             {
-                std::cout<<i<<"-"<< *equipes[i];
+                std::cout<<i<<"-";
+                std::cout<< *equipes[i];
             }
-            std::cout<<"\nChoisis une equipe\n"<<std::endl;
+            std::cout<<"\nChoisis une equipe :\n"<<std::endl;
+
             std::cin>>nombreDeLequipeChoisi;
+
             for(int i=0; i<equipes.size(); i++)
             {
                 if(i==nombreDeLequipeChoisi)
@@ -223,6 +216,7 @@ void Juge::ajouterUnProjetPourLEvaluer( vector<Equipe*>& equipes)
                 }
             }
             project.push_back(&p);
+
         }
         else{
             addMore = 'n' ;
@@ -231,13 +225,23 @@ void Juge::ajouterUnProjetPourLEvaluer( vector<Equipe*>& equipes)
     while (addMore == 'O' || addMore == 'o');
 }
 //********************************************************************************************//
-void Juge::evaluerProjets(vector<Equipe*>& equipes)
-{
+void Juge::evaluerProjets(vector<Equipe*>& equipes) {
+
     ajouterUnProjetPourLEvaluer(equipes);
 
-    for (Projet* p : project)
-    {
-        p->setScore(p->getNoteFiabiliteDeProjet() + p->getNoteOriginaliteDeProjet() + p->getNoteQualiteCode());
+    for (int i = 0; i < project.size(); i++) {
+
+        DonnerNoteFiabiliteDeProjet(*project[i]);
+        DonnerNoteOriginaliteDeProjet(*project[i]);
+        DonnerNoteQualiteCodeDeProjet(*project[i]);
+
+
+        float reliabilityScore = project[i]->getNoteFiabilite();
+        float originalityScore = project[i]->getNoteoriginalite();
+        float codeQualityScore = project[i]->getNoteQualiteCode();
+        float totalScore = reliabilityScore + originalityScore + codeQualityScore;
+
+
+        project[i]->setScore(totalScore);
     }
-    std::cout<<"votre projet est evalue avec succes ."<<std::endl;
 }

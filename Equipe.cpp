@@ -180,4 +180,3 @@ void Equipe::afficherFichierEquipe()
     }
     fi.close();
 }
-

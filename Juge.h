@@ -22,9 +22,9 @@ public:
 
     void communiquerViaMessage();
     void communiquerViaCommentaire();
-    void DonnerNoteOriginaliteDeProjet();
-    void DonnerNoteFiabiliteDeProjet();
-    void DonnerNoteQualiteCodeDeProjet();
+    void DonnerNoteOriginaliteDeProjet(Projet&);
+    void DonnerNoteFiabiliteDeProjet(Projet&);
+    void DonnerNoteQualiteCodeDeProjet(Projet&);
 
     friend std::istream& operator>>(std::istream& in, Juge& juge);
     friend std::ostream& operator<<(std::ostream& out, const Juge& juge);
@@ -34,10 +34,10 @@ public:
     Juge& operator=(const Juge& autre);
 
     void evaluerProjets(vector<Equipe*>&);
-    static bool comparerJugesParScore(const Juge* a, const Juge* b);
+    static bool comparerJugesParScore( Juge* a, Juge* b);
 
     static void remplirFichierJuge(Juge j);
-    static void afficherFichierJuge(std::fstream&);
+    static void afficherFichierJuge();
 
     void remplirIdentiteDesProjetsJugeesParCeJuge();
 

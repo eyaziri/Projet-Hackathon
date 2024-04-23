@@ -110,4 +110,3 @@ void Participant<U>::afficherFichierParticipant() {
 
 
 template class Participant<std::string>;
-
