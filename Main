@@ -1,0 +1,42 @@
+#include <iostream>
+#include "Projet.h"
+#include "Juge.h"
+#include "Participant.h"
+#include "Equipe.h"
+#include "Hackathon.h"
+#include "Organisateur.h"
+#include "UtilisateurPlateforme.h"
+
+using namespace std;
+int main()
+{
+    system("color F0");
+    Hackathon h;
+    Equipe e1;
+    Equipe e2;
+    Juge j;
+
+
+    cout << "Enter details for Equipe 1:" << endl;
+    cin >> e1;
+
+    cout << "Enter details for Equipe 2:" << endl;
+    cin >> e2;
+
+    cout << "Enter details for Juge:" << endl;
+    cin >> j;
+
+    h.pushBackUnElementEquipe(&e1, h);
+    h.pushBackUnElementEquipe(&e2, h);
+    h.pushBackUnElementJuge(&j, h);
+
+    j.evaluerProjets(h.getEquipe());
+
+    cout << "\nScores:\n";
+
+    cout << "Score of project associated with Equipe 1: " << e1.getProjet1().getScore() << endl;
+    cout << "Score of project associated with Equipe 2: " << e2.getProjet1().getScore() << endl;
+
+    cout << "\n\nHave a great day!\n\n";
+    return 0;
+}
